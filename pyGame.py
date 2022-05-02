@@ -86,11 +86,13 @@ player = Player()
 
 setup_maze(levels[1])
 
-turtle.listen
+turtle.listen()
 turtle.onkey(player.go_up,"Up")
 turtle.onkey(player.go_down,"Down")
 turtle.onkey(player.go_left,"Left")
 turtle.onkey(player.go_right,"Right")
+
+wn.tracer(0)
 
 while True:
     pass
