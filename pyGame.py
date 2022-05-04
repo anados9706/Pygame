@@ -1,98 +1,33 @@
-import turtle
-import pygame
+import pygame,sys
+screen_width,screen_height = 800,800
+pygame.init()
+screen = pygame.display.set_mode((screen_width,screen_height))
+bg = pygame.image.load("black.bg.jpg")
+bg = pygame.transform.scale(bg,(screen_width,screen_height))
+path = [((0,400),(200,30)),((200,400),(30,200)),((200,600),(300,30)),((500,200),(30,430)),((500,200),(100,30)),((600,100),(30,130))]
+run=True
+pygame.mouse.set_pos((50,415))
+clock = pygame.time.Clock()
+font = pygame.font.Font(None,60)
 
-wn = turtle.Screen()
-wn.bgcolor("dark blue")
-wn.title("Just a Maze Game")
-wn.setup(700,700)
+while run:
+    clock.tick(15)
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            pygame.quit()
+            sys.exit()   
 
-class Pen(turtle.Turtle):
-    def __init__(self):
-        turtle.Turtle.__init__(self)
-        self.shape("square")
-        self.color("light blue")
-        self.penup()
-        self.speed(0)
+    if any (b[0][0]<=pygame.mouse.get_pos()[0]<=b[1][0]+b[0][0] and b[0][1]<=pygame.mouse.get_pos()[1]<=b[1][1]+b[0][1] for b in path):
+        print("true")
+    else:
+        print("false")
 
-class Player(turtle.Turtle):
-    def __init__(self):
-        turtle.Turtle.__init__(self)
-        self.shape("square")
-        self.color("red")
-        self.penup()
-        self.speed(0) 
+    screen.blit(bg,(0,0))
+    if ((pygame.mouse.get_pos()[0]-615)**2+(pygame.mouse.get_pos()[1]-130)**2)<=100:
+        msg = font.render("WINNER",1,(255,255,0)) 
+        screen.blit(msg,(300,100))
 
-    def go_up(self):
-        self.goto(self.xcor(), self.ycor() +24)
-
-    def go_down(self):
-        self.goto(self.xcor(), self.ycor() -24)
-
-    def go_left(self):
-        self.goto(self.xcor(), -24, self.ycor())
-
-    def go_right(self):
-        self.goto(self.xcor(), +24, self.ycor())
-
-        
-levels = [""]
-
-level_1 = [
-"XXXXXXXXXXXXXXXXXXXXXXXXX",
-"XXXXXO XXXXXXXXXXXXXXXXXX",
-"XXXXX  XXXXXXXXXXXXXXXXXX",
-"XXXXX      XXXXXXXXXXXXXX",
-"XXXXXXXX   XXXXXXXXXXXXXX",
-"XXXXXXXX   XXXXXXXXXXXXXX",
-"XXXXXXXX XXXXXXXXXXXXXXXX",
-"XXXXXXXX XXXXXXXXXXXXXXXX",
-"XXXXXXXX XXXXXXXXXXXXXXXX",
-"XXXXXXXX XXXXXXXXXXXXXXXX",
-"XXXXXXXX XXXXXXXXXXXXXXXX",
-"XXXXXXXX     XXXXXXXXXXXX",
-"XXXXXXXXXXXX XXXXXXXXXXXX",
-"XXXXXXXXXXXX XXXXXXXXXXXX",
-"XXXXXXXXXXXX XXXXXXXXXXXX",
-"XXXXXXXXXXX  XXXXXXXXXXXX",
-"XXXXXXXXXXX  XXXXXXXXXXXX",
-"XXXXXXXXXXX  XXXXXXXXXXXX",
-"XXXXXXXXXXX  XXXXXXXXXXXX",
-"XXXXXXXXXXX  XXXXXXXXXXXX",
-"XXXXXXXXXXX  XXXXXXXXXXXX",
-"XXXXXXXX     XXXXXXXXXXXX",
-"XXXXXXXX  XXXXXXXXXXXXXXX",
-"XXXXXXXX  XXXXXXXXXXXXXXX",
-"XXXXXXXXXXXXXXXXXXXXXXXXX",
-]
-
-levels.append(level_1)
-
-def setup_maze(level):
-    for y in range(len(level)):
-        for x in range(len(level[y])):
-            character = level [y] [x]
-            screen_x = -288 + (x* 24)
-            screen_y = 288 - (y* 24)
-
-            if character == "X":
-                pen.goto(screen_x, screen_y)
-                pen.stamp()
-
-            if character == "O":
-                player.goto(screen_x, screen_y)  
-
-pen = Pen()
-player = Player()
-
-setup_maze(levels[1])
-
-turtle.listen()
-turtle.onkey(player.go_up,"Up")
-turtle.onkey(player.go_down,"Down")
-turtle.onkey(player.go_left,"Left")
-turtle.onkey(player.go_right,"Right")
-
-wn.tracer(0)
-
-while True:
-    pass
+    for x in path:
+        pygame.draw.rect(screen,(255,255,255),x)
+    pygame.draw.circle(screen,(225,0,0),(615,130),10)
+    pygame.display.update()     
