@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+    <head></head>
+
+    <body>
+        <img id="canvas" src="./MAZE-3.png" height="800" width="800">
+        <p id="output" style="font-size: 20px; text-align:center;"></p>
+        
+        <script>
+            let img = document.getElementById("canvas");
+            img.x = img.getBoundingClientRect().left;
+            img.y = img.getBoundingClientRect().top;
+            function click(e) {
+            document.getElementById("output").innerHTML = "X coords: " + (e.clientX - img.x) + "<br> Y coords: " + (e.clientY - img.y);
+            }
+            img.addEventListener("click", click);   
+        </script>
+    </body>
+</html>
